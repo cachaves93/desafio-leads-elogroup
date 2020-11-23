@@ -5,5 +5,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-/* Prebuilt themes */
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+/* Overriding primary theme */
+.mat-toolbar.mat-primary {
+  background: #14222B;
+  color: #fff;
+}
+
+.clickable {
+  :hover {
+    cursor: pointer;
+  }
+}
+
+label {
+  font-size: 1.25rem;
+  font-weight: bold;
+}

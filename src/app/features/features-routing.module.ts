@@ -3,8 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/guards/auth-guard';
 import { HomeComponent } from '../features/home/home.component';
 import { LeadDetailsComponent } from '../features/leads/lead-details/lead-details.component';
-import { ListLeadsComponent } from './leads/leads-list/leads-list.component';
+import { LeadsPanelComponent } from './leads/leads-panel/leads-panel.component';
 import { FeaturesComponent } from './features.component';
+import { NewLeadComponent } from './leads/new-lead/app-new-lead.component';
+import { LeadsHomeComponent } from './leads/leads-home/leads-home.component';
 
 const routes: Routes = [
   {
@@ -19,16 +21,22 @@ const routes: Routes = [
       {
         path: 'leads',
         canActivate: [AuthGuard],
-        children: [
-          {
-            path: 'leads-list',
-            component: ListLeadsComponent,
-          },
-          {
-            path: 'leads-details/:leadId',
-            component: LeadDetailsComponent,
-          }
-        ]
+        component: LeadsHomeComponent,
+      },
+      {
+        path: 'leads/leads-panel',
+        canActivate: [AuthGuard],
+        component: LeadsPanelComponent,
+      },
+      {
+        path: 'leads/leads-details/:leadId',
+        canActivate: [AuthGuard],
+        component: LeadDetailsComponent,
+      },
+      {
+        path: 'leads/new-lead',
+        canActivate: [AuthGuard],
+        component: NewLeadComponent,
       }
     ]
   },

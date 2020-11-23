@@ -1,0 +1,62 @@
+<table
+  #tableElement
+  style="border: 2px solid black"
+>
+  <thead>
+    <tr
+      style="border: 2px solid black;"
+    >
+      <th
+        [width]="
+          columnWidthPercentage.toString() + '%'
+        "
+        *ngFor="
+          let columnData
+          of
+          dragDropTableParams.columnData
+        "
+      >
+        {{ columnData.name }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="
+        let draggableRow
+        of
+        dragDropTableContent.draggableRows;
+        index as rowIndex
+      "
+      [class]="'draggableRow'+rowIndex"
+    >
+      <td
+        *ngFor="
+          let columnData
+          of
+          dragDropTableParams.columnData;
+          index as columnIndex
+        "
+        [ngClass]="
+          calcDragAreaClass( draggableRow, columnData )
+        "
+      >
+        <ng-container *ngIf="draggableRow.status === columnData.status">
+          <div
+            cdkDrag
+            [cdkDragBoundary]="'.draggableRow'+rowIndex"
+            (cdkDragStarted)="handleDragStart($event, rowIndex, draggableRow.status)"
+            [cdkDragFreeDragPosition]="draggableRow.dragPosition"
+            class="clickable button-container"
+          >
+            <button
+              class="drag-button"
+            >
+              {{ draggableRow.label }}
+            </button>
+          </div>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>

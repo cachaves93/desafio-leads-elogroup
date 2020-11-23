@@ -1,0 +1,43 @@
+
+table {
+
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    background-color: #14222B;
+    color: white;
+    border: 1px solid white;
+    text-align: center;
+  }
+
+  td {
+    border: 1px solid black;
+    text-align: center;
+  }
+
+  td, th {
+    padding: 0.5rem;
+  }
+}
+
+.drag-button {
+  background-color: #190d6b;
+  color: white;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+.full-size {
+  width: 100%;
+  height: 100%;
+}
+
+.background-red {
+  background-color: #f7c2bc;
+}
+
+.background-green {
+  background-color: #dcf7de;
+}

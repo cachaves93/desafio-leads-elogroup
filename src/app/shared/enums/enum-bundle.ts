@@ -1,0 +1,17 @@
+export enum LeadStatusEnum {
+  CLIENTE_EM_POTENCIAL = 'CLIENTE_EM_POTENCIAL',
+  DADOS_CONFIRMADOS = 'DADOS_CONFIRMADOS',
+  REUNIAO_AGENDADA = 'REUNIAO_AGENDADA'
+}
+
+export enum ButtonSizeEnum {
+  BIG = 'BIG',
+  REGULAR = 'REGULAR'
+}
+
+export enum LeadOpportunityEnum {
+  RPA = 'RPA',
+  PRODUTO_DIGITAL = 'PRODUTO_DIGITAL',
+  ANALYTICS = 'ANALYTICS',
+  BPM = 'BPM'
+}

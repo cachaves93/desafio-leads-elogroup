@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-card-title>
+    <app-page-title
+      title="Painel de Leads"
+    ></app-page-title>
+  </mat-card-title>
+  <mat-card-content>
+    <div class="row mt-4 ml-3">
+      <div class="col-12 mt-5">
+        <app-button
+          [hasIcon]="true"
+          iconName="person_add"
+          [size]="newLeadButtonSize"
+          text="Novo Lead"
+          (click)="handleOpenModalNewLead(newLeadTemplate)"
+        ></app-button>
+      </div>
+    </div>
+    <div class="row mt-5 ml-1">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+        <ng-container
+          *ngIf="hasNotification"
+        >
+          <ngb-alert
+            [type]="notificationType"
+            (closed)="handleCloseAlert()"
+          >
+            {{ notificationMessage }}
+          </ngb-alert>
+        </ng-container>
+        <app-drag-drop-table
+          [dragDropTableParams]="dragDropTableParams"
+          [dragDropTableContent]="dragDropTableContent"
+          (emitNotification)="handleNotification($event)"
+        ></app-drag-drop-table>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<ng-template #newLeadTemplate>
+  <!--
+    <app-new-lead
+      [hasNavigatorArrow]="false"
+    ></app-new-lead>
+    -->
+</ng-template>
+

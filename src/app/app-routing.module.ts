@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/guards/auth-guard';
+import { LoginComponent } from './features/access/login/login.component';
 import { LeadDetailsComponent } from './features/leads/lead-details/lead-details.component';
-import { ListLeadsComponent } from './features/leads/leads-list/leads-list.component';
+import { LeadsPanelComponent } from './features/leads/leads-panel/leads-panel.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: ListLeadsComponent,
+        component: LoginComponent,
       },
       {
         path: 'forgot-my-password',

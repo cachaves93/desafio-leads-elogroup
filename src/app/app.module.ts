@@ -8,12 +8,14 @@ import { AuthGuard } from './core/guards/auth-guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BearerInterceptor } from './core/interceptors/auth-interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     CoreModule,
     AppRoutingModule,

@@ -10,7 +10,6 @@ export class AppLayoutComponent {
   public isSidebarOpen: boolean = true;
 
   handleSidebarToggle(): void {
-    console.log('toggled');
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 

@@ -1,0 +1,17 @@
+<div class="clickable">
+  <button
+    [ngClass]="
+      size === 'BIG' ? 'big-button' : 'regular-button'
+    "
+  >
+    <ng-container *ngIf="hasIcon">
+      <mat-icon
+      >
+        {{ iconName }}
+      </mat-icon>
+      &nbsp;
+    </ng-container>
+    {{ text }}
+  </button>
+</div>
+

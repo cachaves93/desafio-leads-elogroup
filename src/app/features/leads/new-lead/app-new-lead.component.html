@@ -1,0 +1,91 @@
+<mat-card>
+  <mat-card-title>
+    <app-page-title
+      [hasNavigatorArrow]="hasNavigatorArrow"
+      title="Cadastro de Novo Lead"
+    ></app-page-title>
+  </mat-card-title>
+  <mat-card-content>
+    <ng-container *ngIf="hasAlert">
+      <div class="row mt-4">
+        <div class="col-12">
+          <ngb-alert
+            type="success"
+            (closed)="handleCloseAlert()"
+          >
+            {{ alertMessage }}
+          </ngb-alert>
+        </div>
+      </div>
+    </ng-container>
+    <div
+      class="row"
+      [ngClass]="!hasAlert ? 'mt-5' : null"
+    >
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="row form-group">
+          <div class="col-12">
+            <label
+              for="lead-name"
+            >
+              Nome:
+            </label>
+            <div>
+              <input
+                id="lead-name"
+                class="form-control"
+                [(ngModel)]="registerNewLeadModel.name"
+              />
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <label
+              for="lead-phone"
+            >
+              Telefone:
+            </label>
+            <div>
+              <input
+                id="lead-phone"
+                class="form-control"
+                [(ngModel)]="registerNewLeadModel.phone"
+              />
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <label
+              for="lead-email"
+            >
+              Email:
+            </label>
+            <div>
+              <input
+                id="lead-email"
+                class="form-control"
+                [(ngModel)]="registerNewLeadModel.email"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-8 col-sm-12">
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <app-new-lead-opportunity-table
+              (emitContent)="handleOpportunityTableContent($event)"
+            ></app-new-lead-opportunity-table>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-lg-8 col-md-8 col-sm-12 d-flex justify-content-end">
+            <app-button
+              (click)="handleRegisterNewLead()"
+              size="ButtonSizeEnum.REGULAR"
+              text="Registrar Lead"
+            ></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

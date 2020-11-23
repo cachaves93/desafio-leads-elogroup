@@ -3,10 +3,12 @@
     sidebar-content
     class="ml-3 mr-3"
   >
-    <div class="clickable">
+    <div
+      class="clickable"
+      (click)="navigateTo('/features/home')"
+    >
       <div
         class="d-flex justify-content-center mt-3"
-        (click)="navigateTo('/features/home')"
       >
         <mat-icon>
           home
@@ -17,10 +19,12 @@
       </div>
     </div>
 
-    <div class="clickable">
+    <div
+      class="clickable"
+      (click)="navigateTo('/features/leads')"
+    >
       <div
         class="d-flex justify-content-center mt-3"
-        (click)="navigateTo('/features/leads/leads-list')"
       >
         <mat-icon>
           assignment

@@ -9,15 +9,19 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BearerInterceptor } from './core/interceptors/auth-interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { AccessModule } from './access/access.module';
+import { LeadsModule } from './features/leads/leads.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     CommonModule,
     BrowserModule,
+    AccessModule,
     CoreModule,
+    LeadsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LeadsListRequest, NewLeadRequestModel } from 'src/app/shared/models/requests.model';
 import { LeadsListResponseData } from 'src/app/shared/models/responses.model';
-import { LeadsModule } from '../leads.module';
 
 @Injectable({
   providedIn: 'root'

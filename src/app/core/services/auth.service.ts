@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,18 +9,34 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
   ) {}
 
 
-  login(): Observable<any> {
+  login(
+    username: string,
+    password: string
+  ): Observable<any> {
+
     return this.http.post<any>(
-      ``, {}
+      ``, {
+        requestType: 'login',
+        username,
+        password,
+      }
     );
   }
 
-  isAuthenticated(): void {
+  isAuthenticated(): boolean {
+    const token = this.localStorageService.getToken();
 
+    return token ? true : false;
+  }
+
+  logout(): void {
+    this.localStorageService.removeToken();
+    location.reload();
   }
 
 }

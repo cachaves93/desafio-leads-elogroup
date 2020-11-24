@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './access/login/login.component';
+import { RegisterComponent } from './access/register/register.component';
 import { AuthGuard } from './core/guards/auth-guard';
-import { LoginComponent } from './features/access/login/login.component';
 import { LeadDetailsComponent } from './features/leads/lead-details/lead-details.component';
 import { LeadsPanelComponent } from './features/leads/leads-panel/leads-panel.component';
 
@@ -25,18 +26,18 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        component: LeadDetailsComponent,
+        component: RegisterComponent,
       }
     ]
   },
   {
     path: '',
-    redirectTo: 'features',
+    redirectTo: 'features/home',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'pages',
+    redirectTo: 'features/home',
   },
 ];
 

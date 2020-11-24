@@ -112,8 +112,8 @@ export class LeadsPanelComponent implements OnInit, OnDestroy {
 
   handleNotification(event: DragDropTableEvent): void {
     this.hasNotification = event.hasNotification;
-    this.notificationType = event.notification.type;
-    this.notificationMessage = event.notification.message;
+    this.notificationType = event.notification?.type;
+    this.notificationMessage = event.notification?.message;
   }
 
   handleCloseAlert(): void {

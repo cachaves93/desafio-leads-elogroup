@@ -28,20 +28,22 @@
             {{ notificationMessage }}
           </ngb-alert>
         </ng-container>
-        <app-drag-drop-table
-          [dragDropTableParams]="dragDropTableParams"
-          [dragDropTableContent]="dragDropTableContent"
-          (emitNotification)="handleNotification($event)"
+        <ng-container
+          *ngIf="dragDropTableContent"
+        >
+          <app-drag-drop-table
+            [dragDropTableParams]="dragDropTableParams"
+            [dragDropTableContent]="dragDropTableContent"
+            (emitNotification)="handleNotification($event)"
         ></app-drag-drop-table>
+        </ng-container>
       </div>
     </div>
   </mat-card-content>
 </mat-card>
 <ng-template #newLeadTemplate>
-  <!--
-    <app-new-lead
-      [hasNavigatorArrow]="false"
-    ></app-new-lead>
-    -->
+  <app-new-lead
+    [hasNavigatorArrow]="false"
+  ></app-new-lead>
 </ng-template>
 

@@ -12,5 +12,7 @@ export class AppButtonComponent {
   @Input() iconName: string;
   @Input() text: string;
   @Input() size: ButtonSizeEnum;
+  @Input() type: string;
+  @Input() disabled: boolean;
 
 }

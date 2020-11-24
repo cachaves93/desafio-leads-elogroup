@@ -5,7 +5,8 @@ import { ButtonSizeEnum, LeadOpportunityEnum, LeadStatusEnum } from 'src/app/sha
 import { RegisterNewLeadModel } from 'src/app/shared/models/leads.model';
 import { OpportunityTableModel, OpportunityTableRow } from 'src/app/shared/models/opportunity-table.model';
 import { NewLeadRequestModel } from 'src/app/shared/models/requests.model';
-import { LeadsService } from '../services/leads-service.service';
+
+import { LeadsService } from 'src/app/features/leads/services/leads-service.service';
 
 @Component({
   selector: 'app-new-lead',
@@ -24,9 +25,7 @@ export class NewLeadComponent {
 
   constructor(
     private leadsService: LeadsService
-  ) {
-    console.log('Initiated');
-  }
+  ) {}
 
   handleOpportunityTableContent(event: OpportunityTableModel): void {
     this.registerNewLeadModel.opportunityTableModel = event;

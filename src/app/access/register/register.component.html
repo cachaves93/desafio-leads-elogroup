@@ -1,0 +1,183 @@
+<div
+  class="full-page"
+>
+  <div class="row no-gutters">
+    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10
+      offset-lg-3 offset-md-2 offset-sm-1 offset-xs-1 login-panel">
+      <form
+        [formGroup]="registerForm"
+        (onSubmit)="register()"
+        class="container form-group"
+      >
+        <div class="row mt-4">
+          <div
+            class="col-2"
+          >
+            <span
+              class="clickable"
+              routerLink="/auth/login"
+            >
+              <mat-icon>
+                arrow_back
+              </mat-icon>
+            </span>
+          </div>
+          <div class="col-12 d-flex justify-content-center">
+            <img
+              alt="Logo"
+              src="../../../../assets/logo-elogroup.JPG"
+            />
+          </div>
+        </div>
+        <ng-container
+          *ngIf="hasNotification"
+        >
+        <div class="mt-2">
+          <ngb-alert
+            type="success"
+            (closed)="handleClose()"
+          >
+            &nbsp;{{ notificationMessage }}
+            <a
+              routerLink="/auth/login"
+            >
+              Retornar para Login
+            </a>
+          </ngb-alert>
+        </div>
+        </ng-container>
+        <div class="row m-3">
+          <div
+            class="col-12"
+            [ngClass]=" !hasNotification ? 'mt-3': null"
+          >
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center">
+                <label
+                  for="login"
+                >
+                  Usuário:
+                </label>
+              </div>
+            </div>
+            <div
+              class="row mt-1"
+            >
+              <div
+              class="
+                col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1
+              ">
+                <input
+                  id="login"
+                  class="form-control input-text"
+                  formControlName="username"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center">
+                <label
+                  for="password"
+                >
+                  Senha:
+                </label>
+              </div>
+            </div>
+            <div
+              class="row mt-1"
+            >
+              <div
+                class="col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1"
+              >
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control input-text"
+                  formControlName="password"
+                  (input)="logErrors()"
+                />
+                <ng-container
+                  *ngIf="
+                    registerForm.get('password').invalid
+                    && ( registerForm.get('password').touched
+                    || registerForm.get('password').dirty )
+                  "
+                >
+                  <ng-container
+                    *ngIf="registerForm.get('password').errors.minlength"
+                  >
+                    <small class="mt-1">
+                      A senha deve ter no mínimo {{registerForm.get('password').errors.minlength.requiredLength}}
+                      caracteres, contendo ao menos um número, uma letra e um caractere especial.
+                    </small>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="registerForm.get('password').errors.pattern"
+                  >
+                    <small>
+                      A senha deve ter no mínimo um número, uma letra e um caractere especial.
+                    </small>
+                  </ng-container>
+                </ng-container>
+                <ng-container ></ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center">
+                <label
+                  for="assert-password"
+                >
+                  Confirmação Senha:
+                </label>
+              </div>
+            </div>
+            <div
+              class="row mt-1"
+            >
+              <div
+                class="col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1"
+              >
+                <input
+                  id="assert-password"
+                  type="password"
+                  class="form-control input-text"
+                  formControlName="assertPassword"
+                  (input)="logErrors()"
+                />
+                <ng-container
+                  *ngIf="
+                    registerForm.get('assertPassword').invalid
+                    && ( registerForm.get('assertPassword').touched
+                    || registerForm.get('assertPassword').dirty )
+                  "
+                >
+                  <small>
+                    As senhas inseridas devem ser idênticas
+                  </small>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 d-flex justify-content-center">
+            <app-button
+              type="submit"
+              [size]="registerButtonSize"
+              text="Registrar"
+              [disabled]="registerForm.invalid"
+            ></app-button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

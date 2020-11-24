@@ -5,8 +5,8 @@ import { HomeComponent } from '../features/home/home.component';
 import { LeadDetailsComponent } from '../features/leads/lead-details/lead-details.component';
 import { LeadsPanelComponent } from './leads/leads-panel/leads-panel.component';
 import { FeaturesComponent } from './features.component';
-import { NewLeadComponent } from './leads/new-lead/app-new-lead.component';
 import { LeadsHomeComponent } from './leads/leads-home/leads-home.component';
+import { NewLeadComponent } from './leads/new-lead/app-new-lead.component';
 
 const routes: Routes = [
   {

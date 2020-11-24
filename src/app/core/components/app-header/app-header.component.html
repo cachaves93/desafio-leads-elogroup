@@ -8,11 +8,19 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
-  <div class="pl-4">
+  <span class="pl-4">
     <img
       alt="Logo EloGroup"
       class="logo"
       src="../../../../assets/logo-EloGroup-branco.png"
     />
-  </div>
+  </span>
+  <span style="flex: 1 1 auto"></span>
+  <span>
+    <button
+      (click)="logout()"
+    >
+        Log Out
+    </button>
+  </span>
 </mat-toolbar>

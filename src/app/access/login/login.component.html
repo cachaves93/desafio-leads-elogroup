@@ -1,0 +1,129 @@
+<div
+  class="full-page"
+>
+  <div class="row no-gutters">
+    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10
+      offset-lg-3 offset-md-2 offset-sm-1 offset-xs-1 login-panel">
+      <form
+        [formGroup]="loginForm"
+        (onSubmit)="login()"
+        class="container form-group"
+      >
+        <div class="row mt-4">
+          <div class="col-12 d-flex justify-content-center">
+            <img
+              alt="Logo"
+              src="../../../../assets/logo-elogroup.JPG"
+            />
+          </div>
+        </div>
+        <div class="row m-5">
+          <div class="col-12">
+            <ng-container
+              *ngIf="hasAlert"
+            >
+              <ngb-alert
+                type="danger"
+                (closed)="handleCloseAlert()"
+              >
+                {{ alertMessage }}
+              </ngb-alert>
+            </ng-container>
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center">
+                <label
+                  for="login"
+                >
+                  Login:
+                </label>
+              </div>
+            </div>
+            <div
+              class="row mt-1"
+            >
+              <div
+              class="
+                col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1
+              ">
+                <input
+                  id="login"
+                  class="form-control input-text"
+                  formControlName="username"
+                />
+                <ng-container
+                  *ngIf="
+                    loginForm.get('username').invalid
+                    && ( loginForm.get('username').touched
+                    || loginForm.get('username').dirty )
+                  "
+                >
+                  <small>
+                    Este campo é obrigatório
+                  </small>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-5">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center">
+                <label
+                  for="password"
+                >
+                  Senha:
+                </label>
+              </div>
+            </div>
+            <div
+              class="row mt-1"
+            >
+              <div
+                class="col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1"
+              >
+                <input
+                  id="password"
+                  class="form-control input-text"
+                  type="password"
+                  formControlName="password"
+                />
+                <ng-container
+                  *ngIf="
+                    loginForm.get('password').invalid
+                    && ( loginForm.get('password').touched
+                    || loginForm.get('password').dirty )
+                  "
+                >
+                  <small>
+                    Este campo é obrigatório
+                  </small>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 d-flex justify-content-center">
+            <app-button
+              type="submit"
+              (click)="login()"
+              [size]="loginButtonSize"
+              text="Login"
+              [disabled]="loginForm.invalid"
+            ></app-button>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 d-flex justify-content-center">
+            <a
+              routerLink="/auth/register"
+            >
+              Não é registrado? Registre-se aqui
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

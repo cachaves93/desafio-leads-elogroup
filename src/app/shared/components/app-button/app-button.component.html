@@ -1,5 +1,7 @@
 <div class="clickable">
   <button
+    [disabled]="disabled"
+    [attr.type]="type ? type : null"
     [ngClass]="
       size === 'BIG' ? 'big-button' : 'regular-button'
     "

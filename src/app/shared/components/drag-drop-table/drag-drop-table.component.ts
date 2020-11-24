@@ -1,7 +1,8 @@
 // Angular and Rxjs
 import { CdkDragEnd, CdkDragStart } from '@angular/cdk/drag-drop';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, ContentChild, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 // Models
@@ -31,11 +32,13 @@ export class DragDropTableComponent implements OnInit {
 
   private columnsNumber: number;
   public columnWidthPercentage: number;
+  private clickSuppressed: boolean;
 
   private endDragSubscription: Subscription = Subscription.EMPTY;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +52,7 @@ export class DragDropTableComponent implements OnInit {
     currentRowStatus: string
   ): void {
 
+    this.clickSuppressed = true;
     this.dragDropTableContent.draggableRows[rowIndex].isDragging = true;
     this.dragDropTableContent.draggableRows[rowIndex].hasDragged = true;
 
@@ -79,6 +83,7 @@ export class DragDropTableComponent implements OnInit {
 
         if (columnsRoamedOnDragEnd === 0) {
           this.resetNotification();
+          this.unsuppressClick();
           return this.resetDragXPosition(rowIndex);
         }
 
@@ -99,6 +104,7 @@ export class DragDropTableComponent implements OnInit {
         )
         : this.handleInvalidChange(rowIndex);
 
+        this.unsuppressClick();
 
       }
     );
@@ -193,6 +199,12 @@ export class DragDropTableComponent implements OnInit {
     };
   }
 
+  unsuppressClick(): void {
+    setTimeout(
+      () => {this.clickSuppressed = false; }, 200
+    );
+  }
+
   // -------------------------------------------------------------------------
 
   // ----------------- Table Class Control Functions ----------------------------
@@ -240,6 +252,16 @@ export class DragDropTableComponent implements OnInit {
       hasNotification: false,
     });
   }
+
+  // --------------------------------- Redirects -----------------------------------------
+
+  attemptRedirect(draggableRow: DraggableRow): void {
+    if (!this.clickSuppressed) {
+      this.router.navigate([draggableRow.linkUrl]);
+    }
+  }
+
+  // -------------------------------------------------------------------------------------
 
   // ----------------------------- Popover functions  ------------------------------------
 

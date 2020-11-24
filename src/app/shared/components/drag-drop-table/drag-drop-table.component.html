@@ -58,10 +58,10 @@
                 [popoverTitle]="popoverTitle"
                 #popoverRef="ngbPopover"
                 triggers="manual"
-                [routerLink]="
+                (mouseup)="
                   draggableRow.hasLink ?
-                  draggableRow.linkUrl
-                  : undefined
+                  attemptRedirect(draggableRow)
+                  : null
                 "
                 (mouseenter)="
                   openPopover(

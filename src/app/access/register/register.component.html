@@ -6,7 +6,7 @@
       offset-lg-3 offset-md-2 offset-sm-1 offset-xs-1 login-panel">
       <form
         [formGroup]="registerForm"
-        (onSubmit)="register()"
+        (ngSubmit)="register()"
         class="container form-group"
       >
         <div class="row mt-4">
@@ -98,7 +98,6 @@
                   type="password"
                   class="form-control input-text"
                   formControlName="password"
-                  (input)="logErrors()"
                 />
                 <ng-container
                   *ngIf="
@@ -150,7 +149,6 @@
                   type="password"
                   class="form-control input-text"
                   formControlName="assertPassword"
-                  (input)="logErrors()"
                 />
                 <ng-container
                   *ngIf="

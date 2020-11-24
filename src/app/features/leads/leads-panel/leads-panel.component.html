@@ -6,7 +6,7 @@
   </mat-card-title>
   <mat-card-content>
     <div class="row mt-4 ml-3">
-      <div class="col-12 mt-5">
+      <div class="col-auto mt-5">
         <app-button
           [hasIcon]="true"
           iconName="person_add"
@@ -34,9 +34,20 @@
           <app-drag-drop-table
             [dragDropTableParams]="dragDropTableParams"
             [dragDropTableContent]="dragDropTableContent"
+            [updateStatus$]="updateLeads"
             (emitNotification)="handleNotification($event)"
         ></app-drag-drop-table>
         </ng-container>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-auto">
+        <app-button
+          [hasIcon]="true"
+          iconName="refresh"
+          text="Reset Lead Storage"
+          (click)="resetLeadStorage()"
+        ></app-button>
       </div>
     </div>
   </mat-card-content>
@@ -44,6 +55,7 @@
 <ng-template #newLeadTemplate>
   <app-new-lead
     [hasNavigatorArrow]="false"
+    (emitClose)="handleCloseModal($event)"
   ></app-new-lead>
 </ng-template>
 

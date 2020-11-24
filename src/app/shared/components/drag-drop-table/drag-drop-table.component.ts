@@ -1,13 +1,17 @@
 // Angular and Rxjs
 import { CdkDragEnd, CdkDragStart } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, ContentChild, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 // Models
 import { DragDropTableColumn,
          DragDropTableContent,
          DragDropTableEvent,
          DragDropTableParams,
          DraggableRow } from '../../models/drag-drop-table.model';
+import { LeadModel } from '../../models/leads.model';
+import { UpdateLeadsRequest } from '../../models/requests.model';
 
 @Component({
   selector: 'app-drag-drop-table',
@@ -18,6 +22,7 @@ export class DragDropTableComponent implements OnInit {
 
   @Input() dragDropTableParams: DragDropTableParams;
   @Input() dragDropTableContent: DragDropTableContent;
+  @Input() updateStatus$: (updateRequest: UpdateLeadsRequest) => Observable<any>;
 
   @Output() emitNotification: EventEmitter<DragDropTableEvent> = new EventEmitter();
 
@@ -27,9 +32,11 @@ export class DragDropTableComponent implements OnInit {
   private columnsNumber: number;
   public columnWidthPercentage: number;
 
-  private testSubscription: Subscription = Subscription.EMPTY;
+  private endDragSubscription: Subscription = Subscription.EMPTY;
 
-  constructor() {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.columnsNumber = this.dragDropTableParams.columnData.length;
@@ -43,12 +50,12 @@ export class DragDropTableComponent implements OnInit {
   ): void {
 
     this.dragDropTableContent.draggableRows[rowIndex].isDragging = true;
+    this.dragDropTableContent.draggableRows[rowIndex].hasDragged = true;
 
-
-    this.testSubscription = event.source.ended.subscribe(
+    this.endDragSubscription = event.source.ended.subscribe(
       (dragEnd: CdkDragEnd) => {
 
-        this.testSubscription.unsubscribe();
+        this.endDragSubscription.unsubscribe();
 
         this.endRowDragging(rowIndex);
 
@@ -75,16 +82,21 @@ export class DragDropTableComponent implements OnInit {
           return this.resetDragXPosition(rowIndex);
         }
 
+        const dragEndPreviousStatus: string =
+        this.dragDropTableParams.columnData[currentColumnIndex].status;
+
         const dragEndColumnStatus: string =
         this.dragDropTableParams.columnData[currentColumnIndex + columnsRoamedOnDragEnd].status;
 
         const validChange: boolean = this.validateDragStatusChange(
           currentColumnIndex,
-          dragEndColumnStatus
+          dragEndColumnStatus,
         );
 
         validChange
-        ? this.handleValidChange(rowIndex, dragEndColumnStatus)
+        ? this.handleValidChange(
+          rowIndex, dragEndColumnStatus, dragEndPreviousStatus
+        )
         : this.handleInvalidChange(rowIndex);
 
 
@@ -108,22 +120,37 @@ export class DragDropTableComponent implements OnInit {
   handleValidChange(
     rowIndex: number,
     dragEndColumnStatus: string,
+    dragEndPreviousStatus: string,
   ): void {
 
-    this.dragDropTableContent.draggableRows[rowIndex].status = dragEndColumnStatus;
+    this.dragDropTableContent.draggableRows[rowIndex]
+    .status = dragEndColumnStatus;
 
-    this.emitNotification.emit({
-      hasNotification: true,
-      notification: {
-        type: 'success',
-        message: 'Alteração realizada com sucesso'
+
+    const updateRequest: UpdateLeadsRequest = this.buildUpdateRequest();
+
+    this.updateStatus$(
+      updateRequest
+    ).subscribe(
+      (res: any) => {
+        this.emitNotification.emit({
+          hasNotification: true,
+          notification: {
+            type: 'success',
+            message: res.message,
+          }
+        });
+      },
+      (err: HttpErrorResponse) => {
+        this.dragDropTableContent.draggableRows[rowIndex]
+        .status = dragEndPreviousStatus;
       }
-    });
+    );
+
   }
 
   handleInvalidChange(rowIndex: number): void {
 
-    this.endRowDragging(rowIndex);
     this.resetDragXPosition(rowIndex);
 
     this.emitNotification.emit({
@@ -133,6 +160,25 @@ export class DragDropTableComponent implements OnInit {
         message: 'Essa alteração de status é inválida!'
       }
     });
+  }
+
+  buildUpdateRequest(): UpdateLeadsRequest {
+
+    const leadsList: LeadModel[] =
+     this.dragDropTableContent.draggableRows.map(
+      (row: DraggableRow) => {
+        return {
+          id: row.id,
+          name: row.label,
+          status: row.status,
+          phone: row.additionalData?.phone,
+          email: row.additionalData?.email,
+          opportunities: row.additionalData?.opportunities,
+        } as LeadModel;
+      }
+    );
+
+    return { requestType: 'update-leads', leadsList } as UpdateLeadsRequest;
   }
 
 
@@ -195,6 +241,38 @@ export class DragDropTableComponent implements OnInit {
     });
   }
 
-  // -------------------------------------------------------------------------
+  // ----------------------------- Popover functions  ------------------------------------
+
+  openPopover(
+    popoverReference: NgbPopover,
+    draggableRowData: DraggableRow
+  ): void {
+    if (!draggableRowData.hasDragged) {
+      popoverReference.open({data: draggableRowData});
+    }
+  }
+
+  closePopover(
+    popoverReference: NgbPopover
+  ): void {
+    popoverReference.close();
+  }
+
+  // ------------------------------------------------------------------------------------
+
+  // ------------------------------- Enum Handler ---------------------------------------
+
+  isArray(value: any): boolean {
+    return Array.isArray(value) ? true : false;
+  }
+
+  enumArrayHandler(array: string[]): string[] {
+
+    return array.length > 0
+    ? array.map( item => item.replace('_', ' ').toUpperCase() )
+    : undefined;
+  }
+
+  // ------------------------------------------------------------------------------------
 
 }

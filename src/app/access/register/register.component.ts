@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { ButtonSizeEnum } from 'src/app/shared/enums/enum-bundle';
 
@@ -40,7 +41,7 @@ export class RegisterComponent {
   });
 
   constructor(
-    private localStorageService: LocalStorageService,
+    private authService: AuthService,
   ) {}
 
   equalValue(matchControlName: string)
@@ -58,24 +59,22 @@ export class RegisterComponent {
 
   register(): void {
 
-    console.log('run register');
-    /*
-    this.localStorageService.setObject({
-      eloGroupUser: this.registerForm.get('username'),
-    });
+    const username = this.registerForm.get('username').value;
+    const password = this.registerForm.get('password').value;
 
-    this.hasNotification = true;
-    this.notificationMessage = 'Usuário Registrado com Sucesso!'; */
+    this.authService.register(
+      username, password
+    ).subscribe(
+      (res: any) => {
+        this.registerForm.reset();
+        this.hasNotification = true;
+        this.notificationMessage = res.message;
+      }
+    );
   }
 
   handleClose(): void {
     this.hasNotification = false;
-  }
-
-  logErrors(): void {
-    console.log(
-      this.registerForm.get('assertPassword').errors
-    );
   }
 
 }

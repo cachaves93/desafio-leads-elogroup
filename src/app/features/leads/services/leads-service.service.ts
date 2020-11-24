@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LeadsListRequest, NewLeadRequestModel } from 'src/app/shared/models/requests.model';
-import { LeadsListResponseData } from 'src/app/shared/models/responses.model';
+import { LeadModel } from 'src/app/shared/models/leads.model';
+import { GetLeadRequest, LeadsListRequest, NewLeadRequestModel, UpdateLeadsRequest } from 'src/app/shared/models/requests.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,18 @@ export class LeadsService {
 
   getLeadsList(
     leadsListRequest: LeadsListRequest
-  ): Observable<LeadsListResponseData[]> {
-    return this.http.post<LeadsListResponseData[]>(
+  ): Observable<LeadModel[]> {
+    return this.http.post<LeadModel[]>(
       ``, leadsListRequest
     );
+  }
+
+  getLeadData(
+    getLeadRequest: GetLeadRequest
+  ): Observable<LeadModel> {
+    return this.http.post<any>(
+      ``, getLeadRequest
+    )
   }
 
   registerNewLead(
@@ -30,5 +38,12 @@ export class LeadsService {
     );
   }
 
+  updateLeadsList(
+    updateLeadsRequest: UpdateLeadsRequest
+  ): Observable<any> {
+    return this.http.post<any>(
+      ``, updateLeadsRequest
+    );
+  }
 
 }

@@ -12,6 +12,7 @@ export interface DragDropTableColumn {
 
 export interface DragDropTableContent {
   hasPopover: boolean;
+  popoverParams: PopoverParam[];
   rowHeight?: number;
   draggableRows: DraggableRow[];
 }
@@ -20,8 +21,12 @@ export interface DraggableRow {
   id: number;
   label: string;
   status: string;
+  hasLink: boolean;
+  linkUrl?: string;
   isDragging?: boolean;
+  hasDragged?: boolean;
   dragPosition: DragDropCoordinates;
+  additionalData?: any;
 }
 
 export interface DragDropCoordinates {
@@ -35,4 +40,9 @@ export interface DragDropTableEvent {
     type: string;
     message: string;
   };
+}
+
+export interface PopoverParam {
+  label: string;
+  property: string;
 }

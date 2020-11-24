@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
     selector: 'app-header',
@@ -9,8 +10,10 @@ import { AuthService } from '../../services/auth.service';
 export class AppHeaderComponent {
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
+
+  @Input() isMobile: boolean;
 
   @Output()
   toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
@@ -19,7 +22,7 @@ export class AppHeaderComponent {
     this.toggleSidebar.emit();
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 

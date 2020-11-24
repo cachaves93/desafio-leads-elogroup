@@ -45,7 +45,6 @@ export class LoginComponent {
     ).subscribe(
       (res: any) => {
         if (res.status === 200) {
-          console.log(this.redirectUrl);
           this.redirectUrl
           ? this.router.navigate([`${this.redirectUrl}`])
           : this.router.navigate(['/features/home']);

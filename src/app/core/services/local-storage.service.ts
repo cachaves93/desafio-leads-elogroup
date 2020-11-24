@@ -44,4 +44,8 @@ export class LocalStorageService {
     localStorage.removeItem('jwtTokenEloGroup');
   }
 
+  resetLeadsStorage(): void {
+    localStorage.removeItem('eloGroupLeads');
+  }
+
 }

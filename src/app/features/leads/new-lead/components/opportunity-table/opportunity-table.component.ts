@@ -54,5 +54,7 @@ export class NewLeadOpportunityTableComponent {
     this.opportunityTableModel.rows.forEach(
       (row: OpportunityTableRow) => row.checked = newBoolean
     );
+
+    this.emitContent.emit(this.opportunityTableModel);
   }
 }

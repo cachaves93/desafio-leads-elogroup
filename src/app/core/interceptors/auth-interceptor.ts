@@ -8,9 +8,9 @@ import {
 } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { LeadsListResponseData } from 'src/app/shared/models/responses.model';
 import { LocalStorageService } from '../services/local-storage.service';
 import { Router } from '@angular/router';
+import { LeadModel } from 'src/app/shared/models/leads.model';
 @Injectable()
 export class BearerInterceptor implements HttpInterceptor {
 
@@ -72,6 +72,31 @@ export class BearerInterceptor implements HttpInterceptor {
             })
           );
         }
+
+      case 'register-user':
+
+        const previousUsers: any = JSON.parse(
+          this.localStorageService.getItem('eloGroupUsers')
+        );
+
+        this.localStorageService.setObject({
+          eloGroupUsers: JSON.stringify([
+              ...previousUsers,
+              {
+                username: req.body.username,
+                password: req.body.password
+              }
+            ])
+          });
+
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: {
+              message: 'Usuário Registrado com Sucesso!'
+            }
+          })
+        );
       case 'list-leads':
 
         const leadsListData: any = JSON.parse(
@@ -85,20 +110,42 @@ export class BearerInterceptor implements HttpInterceptor {
           })
         );
 
+      case 'update-leads':
+        this.localStorageService.setObject({
+          eloGroupLeads: JSON.stringify(
+            req.body.leadsList
+          )
+        });
+
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: {
+              message: 'Alteração realizada com sucesso!'
+            }
+          })
+        );
+
       case 'register-new-lead':
 
         const previousLeads: any = JSON.parse(
           this.localStorageService.getItem('eloGroupLeads')
         );
 
+        const newId: number = Number(
+          previousLeads[previousLeads.length - 1].id
+        );
 
         this.localStorageService.setObject({
           eloGroupLeads: JSON.stringify([
               ...previousLeads,
               {
-                id: 0,
+                id: newId,
                 name: req.body.name,
-                status: req.body.status
+                status: req.body.status,
+                phone: req.body.phone,
+                email: req.body.email,
+                opportunities: req.body.opportunities
               }
             ])
           });
@@ -111,6 +158,26 @@ export class BearerInterceptor implements HttpInterceptor {
             }
           })
         );
+
+      case 'get-lead':
+
+        const allLeads: any = JSON.parse(
+          this.localStorageService.getItem('eloGroupLeads')
+        );
+
+        const leadFound: LeadModel = allLeads.find(
+          (lead: LeadModel) => {
+            return Number(lead.id) === Number(req.body.leadId);
+          }
+        );
+
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: leadFound
+          })
+        );
+
       default:
         return of();
     }

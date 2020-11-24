@@ -49,14 +49,90 @@
             [cdkDragFreeDragPosition]="draggableRow.dragPosition"
             class="clickable button-container"
           >
-            <button
-              class="drag-button"
+            <ng-container
+              *ngIf="dragDropTableContent.hasPopover"
             >
-              {{ draggableRow.label }}
-            </button>
+              <button
+                class="drag-button"
+                [ngbPopover]="popoverContent"
+                [popoverTitle]="popoverTitle"
+                #popoverRef="ngbPopover"
+                triggers="manual"
+                [routerLink]="
+                  draggableRow.hasLink ?
+                  draggableRow.linkUrl
+                  : undefined
+                "
+                (mouseenter)="
+                  openPopover(
+                    popoverRef, draggableRow
+                  )
+                "
+                (mousedown)="
+                  closePopover(
+                    popoverRef
+                  )
+                "
+                (mouseleave)="
+                  closePopover(
+                    popoverRef
+                  )
+                "
+              >
+                {{ draggableRow.label }}
+              </button>
+            </ng-container>
+            <ng-container
+              *ngIf="!dragDropTableContent.hasPopover"
+            >
+              <button
+                class="drag-button"
+                [routerLink]="draggableRow.linkUrl"
+              >
+                {{ draggableRow.label }}
+              </button>
+            </ng-container>
+
           </div>
         </ng-container>
       </td>
     </tr>
   </tbody>
 </table>
+
+<ng-template #popoverTitle let-data="data">
+  <div class="title-popover">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        {{ data.label }}
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #popoverContent let-data="data">
+  <div class="row">
+    <ng-container
+      *ngFor="
+        let popoverParam
+        of
+        dragDropTableContent.popoverParams
+      "
+    >
+      <div class="col-12">
+        <span class="popover-label">
+          {{ popoverParam.label }}:
+        </span>
+        <span>
+            &nbsp;
+            {{
+              isArray(data.additionalData[popoverParam.property])
+              ? enumArrayHandler(data.additionalData[popoverParam.property])
+              : data.additionalData[popoverParam.property]
+            }}
+        </span>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

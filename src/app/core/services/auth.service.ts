@@ -28,6 +28,19 @@ export class AuthService {
     );
   }
 
+  register(
+    username: string,
+    password: string,
+  ): Observable<any> {
+    return this.http.post<any>(
+      ``, {
+        requestType: 'register-user',
+        username,
+        password
+      }
+    );
+  }
+
   isAuthenticated(): boolean {
     const token = this.localStorageService.getToken();
 

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 // Enums
 import { ButtonSizeEnum, LeadOpportunityEnum, LeadStatusEnum } from 'src/app/shared/enums/enum-bundle';
 import { RegisterNewLeadModel } from 'src/app/shared/models/leads.model';
@@ -16,12 +16,14 @@ export class NewLeadComponent {
 
   @Input() hasNavigatorArrow: boolean = true;
 
+  @Output() emitClose: EventEmitter<boolean> = new EventEmitter();
+
   public registerNewLeadModel: RegisterNewLeadModel = {
     opportunityTableModel: {} as OpportunityTableModel
   } as RegisterNewLeadModel;
 
   public hasAlert: boolean = false;
-  public alertMessage: string;
+  public alertMessages: {type: string, message: string}[] = [];
 
   constructor(
     private leadsService: LeadsService
@@ -40,7 +42,11 @@ export class NewLeadComponent {
       (row: OpportunityTableRow) => {
         if (row.checked) return row.value;
       }
-    );
+    ).filter( item => item );
+
+    const isValidForm: boolean = this.validateForm(selectedLeadOpportunity);
+
+    if (!isValidForm) return;
 
     const registerNewLeadRequest: NewLeadRequestModel = {
       requestType: 'register-new-lead',
@@ -54,15 +60,60 @@ export class NewLeadComponent {
     this.leadsService.registerNewLead(registerNewLeadRequest)
     .subscribe(
       (res: any) => {
+        this.emitClose.emit(true);
         this.hasAlert = true;
-        this.alertMessage = res.message;
+        this.alertMessages = [{
+          type: 'success',
+          message: res.message
+        }];
       },
       (err: HttpErrorResponse) => {}
     );
   }
 
-  handleCloseAlert(): void {
-    this.hasAlert = false;
+  validateForm(
+    selectedLeadOpportunity: LeadOpportunityEnum[]
+  ): boolean {
+
+    const { name } = this.registerNewLeadModel;
+
+    const mandatoryFields: any = [
+      { fieldName: 'Nome', value: name },
+      { fieldName: 'Oportunidades', value: selectedLeadOpportunity }
+    ];
+
+    let errorFound: boolean = false;
+    const errorFieldNames: string[] = [];
+
+    mandatoryFields.every(
+      (fieldData: any) => {
+        if (!fieldData.value || fieldData.value.length === 0) {
+          errorFound = true;
+          errorFieldNames.push(fieldData.fieldName);
+        }
+        return true;
+      }
+    );
+
+    if (!errorFound) return true;
+
+    this.hasAlert = true;
+    errorFieldNames.forEach(
+      (fieldName: string) => this.alertMessages.push(
+        {
+          type: 'warning',
+          message: `O campo '${fieldName}' é obrigatório`
+        }
+      )
+    );
+
+    return false;
+
+  }
+
+  handleCloseAlert(index: number): void {
+    this.alertMessages.splice(index, 1);
+    if (this.alertMessages.length === 0) this.hasAlert = false;
   }
 
 }
